@@ -1,0 +1,92 @@
+﻿<Window x:Class="HighwaySpeed.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:HighwaySpeed.Client.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:DashboardViewModel}"
+        Title="Highway Speed Enforcement – Live Dashboard" Height="640" Width="1000"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="DataGrid">
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="GridLinesVisibility" Value="Horizontal" />
+            <Setter Property="RowHeight" Value="26" />
+        </Style>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Padding" Value="6" />
+        </Style>
+    </Window.Resources>
+
+    <DockPanel>
+
+        <!-- Status bar: only ever shows what the last poll produced. -->
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock>
+                    <Run Text="Status: " FontWeight="SemiBold" />
+                    <Run Text="{Binding ConnectionStatus, Mode=OneWay}" />
+                </TextBlock>
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock>
+                    <Run Text="Snapshot (UTC): " FontWeight="SemiBold" />
+                    <Run Text="{Binding LastUpdatedUtc, Mode=OneWay, StringFormat=yyyy-MM-dd HH:mm:ss}" />
+                </TextBlock>
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="Polling every 3 s" Foreground="Gray" />
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: the single global leaderboard. -->
+            <GroupBox Grid.Column="0" Header="Global Top 10 — highest average speed (live traffic)">
+                <DataGrid ItemsSource="{Binding GlobalLeaderboard}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" Binding="{Binding Rank}" Width="40" />
+                        <DataGridTextColumn Header="Number plate" Binding="{Binding NumberPlate}" Width="*" />
+                        <DataGridTextColumn Header="Avg km/h" Binding="{Binding AverageSpeedKmh, StringFormat=F1}" Width="90" />
+                        <DataGridTextColumn Header="Cameras" Binding="{Binding CamerasPassed}" Width="80" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+
+            <!-- Right: camera picker + that camera's leaderboard. -->
+            <DockPanel Grid.Column="1">
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="8,8,8,0">
+                    <TextBlock Text="Camera:" VerticalAlignment="Center" Margin="0,0,6,0" />
+                    <ComboBox Width="80"
+                              ItemsSource="{Binding Cameras}"
+                              SelectedItem="{Binding SelectedCamera}" />
+                    <Button Content="Refresh now" Margin="12,0,0,0" Padding="10,2"
+                            Command="{Binding RefreshNowCommand}" />
+                </StackPanel>
+
+                <GroupBox Header="Camera Top 10 — fastest instantaneous speed">
+                    <DataGrid ItemsSource="{Binding SelectedCameraLeaderboard}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" Binding="{Binding Rank}" Width="40" />
+                            <DataGridTextColumn Header="Number plate" Binding="{Binding NumberPlate}" Width="*" />
+                            <DataGridTextColumn Header="km/h" Binding="{Binding SpeedKmh, StringFormat=F1}" Width="90" />
+                            <DataGridTextColumn Header="Captured (UTC)" Binding="{Binding CapturedAtUtc, StringFormat=HH:mm:ss}" Width="110" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>

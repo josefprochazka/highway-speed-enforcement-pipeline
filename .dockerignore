@@ -1,0 +1,13 @@
+# Keep the build context small and reproducible.
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.user
+**/TestResults/
+.git/
+.gitignore
+artifact/
+assignment/
+README.md

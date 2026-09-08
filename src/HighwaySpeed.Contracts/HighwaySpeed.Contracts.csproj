@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Shared contract types used by more than one application:
+      * REST DTOs returned by GET /api/traffic-snapshot  (plain records, no dependencies)
+      * Protos/telemetry.proto                            (the gRPC ingestion contract)
+
+    The .proto file lives here so there is a single source of truth, but it is
+    compiled by the Generator and the Processor (each with its own client/server
+    setting) rather than here - that keeps this project dependency-free so the
+    WPF client can reference it without pulling in gRPC.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Ship the .proto in the NuGet/– build output folder is not needed; this
+         just makes the file show up nicely in the IDE. -->
+    <None Include="Protos\telemetry.proto" />
+  </ItemGroup>
+
+</Project>

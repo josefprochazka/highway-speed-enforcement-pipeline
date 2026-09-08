@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option csharp_namespace = "HighwaySpeed.Contracts.Grpc";
+
+package highwayspeed.telemetry.v1;
+
+// The ingestion contract between the Telemetry Data Generator (client) and the
+// Telemetry Data Processor (server).
+//
+// A single client-streaming call is used: the generator opens the stream once
+// and keeps writing TelemetryMessage values for as long as it runs. This keeps
+// per-message overhead low (no new HTTP request per camera capture) while still
+// giving us a strongly typed, versioned contract.
+service TelemetryIngest {
+  // The generator streams captures; the server answers once when the stream ends.
+  rpc PublishTelemetry(stream TelemetryMessage) returns (PublishSummary);
+}
+
+// One "vehicle captured by a camera" event.
+message TelemetryMessage {
+  // Unique vehicle number plate, e.g. "2AB-04517".
+  string number_plate = 1;
+
+  // Capture time as DateTime.UtcNow.Ticks on the generator. Sent as ticks so the
+  // value survives the wire exactly; the processor converts back to DateTime.
+  int64 timestamp_ticks = 2;
+
+  // Instantaneous speed at this camera, in km/h.
+  float current_speed = 3;
+
+  // Which camera captured the vehicle, 1..10 in travel order.
+  int32 camera_id = 4;
+}
+
+// Sent by the server after the client closes the stream. Handy for logging and
+// for an end-to-end sanity check in tests.
+message PublishSummary {
+  int64 messages_received = 1;
+}

@@ -1,0 +1,16 @@
+<Project>
+
+  <!--
+    Shared MSBuild settings applied to every project in the repository.
+    Keeping them in one place means individual .csproj files only need to
+    declare what makes them different (target framework, package references).
+  -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Deterministic>true</Deterministic>
+    <Product>Highway Speed Enforcement Pipeline</Product>
+  </PropertyGroup>
+
+</Project>

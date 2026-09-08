@@ -1,0 +1,20 @@
+# Normalise line endings: the repo stores LF, Windows checks out CRLF.
+* text=auto
+
+*.cs      text diff=csharp
+*.csproj  text
+*.sln     text eol=crlf
+*.props   text
+*.xaml    text
+*.json    text
+*.yml     text
+*.yaml    text
+*.proto   text
+*.md      text
+Dockerfile text
+*.Dockerfile text
+
+# Binary assets.
+*.pdf     binary
+*.png     binary
+*.ico     binary

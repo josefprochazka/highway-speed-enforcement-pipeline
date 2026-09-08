@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>HighwaySpeed.Processor</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HighwaySpeed.Contracts\HighwaySpeed.Contracts.csproj" />
+    <!-- Lets the test project reach the internal analytics types and host the app in-memory. -->
+    <InternalsVisibleTo Include="HighwaySpeed.Processor.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- gRPC server stubs are generated from the shared .proto in the Contracts project. -->
+    <Protobuf Include="..\HighwaySpeed.Contracts\Protos\telemetry.proto"
+              Link="Protos\telemetry.proto"
+              GrpcServices="Server" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.83.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.17.3" />
+  </ItemGroup>
+
+</Project>

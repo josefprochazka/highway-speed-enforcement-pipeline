@@ -1,0 +1,46 @@
+# ---- .NET build output ----
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+artifact/
+publish/
+*.binlog
+
+# ---- Test / coverage ----
+[Tt]est[Rr]esults/
+*.trx
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# ---- IDE / editor ----
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userprefs
+*.DotSettings.user
+
+# ---- OS ----
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# ---- NuGet ----
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+!**/packages/build/
+
+# ---- MSBuild / Rider / misc ----
+*.swp
+*~
+project.lock.json
+.msbuild/
