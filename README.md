@@ -47,16 +47,15 @@ The system is three decoupled applications:
 - **Docker Desktop** (for the processor container)
 - **Windows** (for the WPF client)
 
-### 1. Run the backend (generator + processor) in Docker
+### 1. Run the processor in Docker
 
 ```powershell
 docker compose up --build
 ```
 
-This starts:
-
-- `processor` – REST on <http://localhost:5080>, gRPC on `localhost:5081`
-- `generator` – immediately starts streaming ~1 000 telemetry messages per second
+This starts the `processor` container – REST on <http://localhost:5080>, gRPC on
+`localhost:5081`. Per the spec, only the processor is a Docker service; the
+generator and client both run natively on the host.
 
 Useful URLs once it is up:
 
@@ -64,7 +63,17 @@ Useful URLs once it is up:
 - `http://localhost:5080/scalar/v1` – interactive API reference
 - `http://localhost:5080/health` – liveness probe
 
-### 2. Run the WPF client (on the Windows host)
+### 2. Run the generator (on the host)
+
+```powershell
+dotnet run --project src/HighwaySpeed.Generator
+```
+
+It immediately starts streaming ~1 000 telemetry messages per second to the
+processor at `http://localhost:5081` (the default in `appsettings.json`, no
+configuration needed).
+
+### 3. Run the WPF client (on the host)
 
 ```powershell
 dotnet run --project src/HighwaySpeed.Client
@@ -269,7 +278,7 @@ Per‑board, not global – see [above](#2-telemetry-data-processor-highwayspeed
 ```
 HighwaySpeed.sln
 ├─ Directory.Build.props            shared MSBuild settings (LangVersion, Nullable, …)
-├─ docker-compose.yml               processor + generator
+├─ docker-compose.yml               processor (the only Docker service per spec)
 ├─ assignment/                      the original PDF brief
 ├─ src/
 │  ├─ HighwaySpeed.Contracts/       REST DTOs + Protos/telemetry.proto  (no dependencies)

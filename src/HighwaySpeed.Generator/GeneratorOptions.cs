@@ -5,7 +5,7 @@ namespace HighwaySpeed.Generator;
 /// <summary>
 /// Configuration for the telemetry generator, bound from the "Generator" section
 /// of appsettings.json (or overridden by environment variables such as
-/// <c>Generator__ProcessorGrpcAddress</c> when running in Docker).
+/// <c>Generator__ProcessorGrpcAddress</c>).
 /// </summary>
 public sealed class GeneratorOptions
 {

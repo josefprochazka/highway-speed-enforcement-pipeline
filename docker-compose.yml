@@ -1,11 +1,8 @@
 name: highway-speed-enforcement
 
-# Two of the three applications run here. The WPF client runs on the Windows host
-# and connects to the processor's REST port published below.
-#
-# Ports 5080/5081 are used on the host as well as inside the containers, so the
-# same address (http://localhost:5080) works whether the processor runs here or
-# via `dotnet run`.
+# Only the processor is a Docker service per the assignment spec. The generator
+# (console app) and the WPF client (desktop app) both run natively on the host
+# and reach this container's published ports.
 services:
 
   processor:
@@ -18,16 +15,3 @@ services:
       - "5081:5081"   # gRPC  – generator streams telemetry
     environment:
       DOTNET_ENVIRONMENT: Production
-
-  generator:
-    build:
-      context: .
-      dockerfile: src/HighwaySpeed.Generator/Dockerfile
-    image: highwayspeed-generator
-    depends_on:
-      - processor
-    environment:
-      DOTNET_ENVIRONMENT: Production
-      # Reach the processor over the compose network by service name.
-      # If the processor is still starting, the generator retries with back-off.
-      Generator__ProcessorGrpcAddress: "http://processor:5081"
