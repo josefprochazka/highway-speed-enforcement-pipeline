@@ -167,10 +167,10 @@ and covered by a test.
   here – the section header says "Live Active Traffic Only" but the purge note
   calls it "all recorded traffic" – so this follows the header.
   (`TrafficAnalyticsTests`)
-- **The purge, "if it does not score on any leaderboard".** On a vehicle's
-  camera‑10 reading, its running‑average state is purged unless its plate
-  still occupies a slot on one of the 10 camera boards – that record is the
-  enforcement evidence, so it's kept. (`TrafficAnalyticsTests`)
+- **The purge.** A vehicle's running-average tracking data is deleted once it
+  passes camera 10 – unless it still holds a spot on one of the 10 camera
+  boards. In that case the data is kept, since it's still needed as part of
+  that vehicle's enforcement record. (`TrafficAnalyticsTests`)
 
 ---
 
