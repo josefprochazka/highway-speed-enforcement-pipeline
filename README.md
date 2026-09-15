@@ -163,7 +163,10 @@ and covered by a test.
   the following tick. (`VehicleRegistryTests`)
 - **Global board = "Live Active Traffic Only".** It holds only vehicles still
   on the stretch (counter 1…10) that have passed ≥ 3 cameras. Passing camera
-  10 removes a vehicle from it immediately. (`TrafficAnalyticsTests`)
+  10 removes a vehicle from it immediately. The brief's own wording conflicts
+  here – the section header says "Live Active Traffic Only" but the purge note
+  calls it "all recorded traffic" – so this follows the header.
+  (`TrafficAnalyticsTests`)
 - **The purge, "if it does not score on any leaderboard".** On a vehicle's
   camera‑10 reading, its running‑average state is purged unless its plate
   still occupies a slot on one of the 10 camera boards – that record is the
